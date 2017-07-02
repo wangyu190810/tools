@@ -20,5 +20,5 @@ config.py.sample 成 config.py
 
 ### 百度图片转换成文字识别地址
 
-
+ 地址 ：[转换图片成文字](http://tools.22too.com:8888/upload)
 
