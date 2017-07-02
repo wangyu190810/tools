@@ -17,3 +17,8 @@ config.py.sample 成 config.py
 ### 运行 
 
     python run.py
+
+### 百度图片转换成文字识别地址
+
+
+

@@ -40,6 +40,11 @@ class Upload(BaseHandler):
         file_metas=self.request.files['file']    
         for meta in file_metas:
             filename=meta['filename']
+            file_stmt = filename.split(".")
+            file_type = file_stmt[-1]
+            if file_type not in config.upload_file_type:
+                self.write("file type is not allow")
+                return 
             filepath=os.path.join(upload_path,filename)
             #有些文件需要已二进制的形式存储，实际中可以更改
             with open(filepath,'wb') as up:      
