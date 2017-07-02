@@ -4,6 +4,7 @@ static_path = "D:\wamp64\www"
 upload_path = "D:\wamp64\www\upload"
 debug = True
 
+upload_file_type = set(["jpg","JPG","png","PGN","JPEG","jpeg","BMP","bmp"])
 APP_ID = '你的 App ID'
 API_KEY = '你的 API Key'
 SECRET_KEY = '你的 Secret Key'
