@@ -1,0 +1,22 @@
+import os
+import platform
+static_path = "D:\wamp64\www"
+upload_path = "D:\wamp64\www\upload"
+debug = True
+
+APP_ID = '你的 App ID'
+API_KEY = '你的 API Key'
+SECRET_KEY = '你的 Secret Key'
+
+baidu_OCR = {
+    "APP_ID": APP_ID,
+    "API_KEY": API_KEY,
+    "SECRET_KEY": SECRET_KEY,
+}
+
+system_os = platform.system()
+if system_os == "Windows":
+    os_env = "win"
+elif system_os == "Linux":
+    os_env = "linux"
+
