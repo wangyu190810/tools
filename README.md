@@ -6,7 +6,6 @@ OCR　c# use baidu ocr api
 run web server
 
 change name config.py.sample to config.py
-
 python run.py
 
 
@@ -22,3 +21,4 @@ config.py.sample 成 config.py
 
  地址 ：[转换图片成文字](http://tools.22too.com:8888/upload)
 
+### 包含了部分tornado的使用
