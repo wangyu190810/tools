@@ -2,6 +2,7 @@ import os
 import platform
 static_path = "D:\wamp64\www"
 upload_path = "D:\wamp64\www\upload"
+upload_img = "D:\wamp64\www\upload"
 log_path = "D:\wamp64\logs"
 
 debug = True
