@@ -1,9 +1,10 @@
 #!-*-coding:utf-8-*-
-
+import time
 import json
 import os
 import logging
 import tornado.web
+import uuid
 
 from etc import config
 from lib.baiduOCRApi import parse_result, parse_result_table
@@ -52,6 +53,34 @@ class Upload(BaseHandler):
 
             # result = parse_result_table(upload_path, filename)
             self.write(result)
+
+
+class UploadImg(BaseHandler):
+
+    def get(self):
+        self.render("upload_img.html")
+
+    def post(self):
+        # 文件的暂存路径
+        upload_path = config.upload_img
+        # 提取表单中‘name’为‘file’的文件元数据
+        file_metas = self.request.files['file']
+        
+        for meta in file_metas:
+            filename = meta['filename']
+            file_stmt = filename.split(".")
+            file_type = file_stmt[-1]
+            if file_type not in config.upload_file_type:
+                self.write("file type is not allow")
+                return
+            filename = str(int(time.time())) + "." + file_type 
+                # filename = file_name_add + "." + file_type
+            filepath = os.path.join(upload_path, filename)
+            # 有些文件需要已二进制的形式存储，实际中可以更改
+            with open(filepath, 'wb') as up:
+                up.write(meta['body'])
+            url = config.img_host+"/static/upload/"+filename
+            return self.render("upload_resp.html",img_url = url)
 
 
 class DownLoad(BaseHandler):
