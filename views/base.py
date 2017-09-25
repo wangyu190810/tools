@@ -5,6 +5,7 @@ import os
 import logging
 import tornado.web
 import uuid
+from PIL import Image  
 
 from etc import config
 from lib.baiduOCRApi import parse_result, parse_result_table
@@ -65,7 +66,7 @@ class UploadImg(BaseHandler):
         upload_path = config.upload_img
         # 提取表单中‘name’为‘file’的文件元数据
         file_metas = self.request.files['file']
-        
+        size = self.get_body_argument("size")
         for meta in file_metas:
             filename = meta['filename']
             file_stmt = filename.split(".")
@@ -79,8 +80,16 @@ class UploadImg(BaseHandler):
             # 有些文件需要已二进制的形式存储，实际中可以更改
             with open(filepath, 'wb') as up:
                 up.write(meta['body'])
-            url = config.img_host+"/static/upload/"+filename
-            return self.render("upload_resp.html",img_url = url)
+            if size != "100":
+                img = Image.open(filepath) 
+                (x, y) = img.size
+                x_size = x * int(size) * 0.01
+                y_size = y * int(size) * 0.01
+                out = img.resize((int(x_size), int(y_size)), Image.ANTIALIAS)
+                out.save(filepath)
+            static_path = "/static/upload/"+filename
+            url = config.img_host+ static_path
+            return self.render("upload_resp.html",img_url = url,src=static_path)
 
 
 class DownLoad(BaseHandler):

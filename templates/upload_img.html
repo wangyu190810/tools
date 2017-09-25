@@ -8,10 +8,89 @@
 </head>
 <body>
     <a href="/">回到首页</a>
-    <strong><h1>图片会定时被清理，不用担心资料泄漏</h1></strong>
+    <strong><h1>上传图片</h1></strong>
           <form action='/upload_img' enctype="multipart/form-data" method='post'>
-          <input type='file' name='file'/ value="选择文件"><br/>
+          <input type='file' name='file' value="选择文件"/ id = 'file'><br/>
+        <div id = "size"> 
+            <input type='text' name = 'size' value="100" /></br>
+        </div>
+        <input type="button" value="读取图像20%" onclick = "readAsDataURL(20)"/>
+        <input type="button" value="读取图像40%" onclick = "readAsDataURL(40)"/>
+        <input type="button" value="读取图像50%" onclick = "readAsDataURL(50)"/>
+        <input type="button" value="读取图像60%" onclick = "readAsDataURL(60)"/>
+        <input type="button" value="读取图像80%" onclick = "readAsDataURL(80)"/>
+        <input type="button" value="读取图像本身尺寸" onclick = "readAsDataURL(100)"/>
           <input type='submit' value='submit'/>
           </form>
+     <div id="result"></div>
 </body>
+
+
+<script>
+    var result = document.getElementById("result");
+    if(typeof FileReader == 'undefined') {
+        result.innerHTML = "抱歉，你的浏览器不支持FileReader";
+    }
+    // 将文件以Data URL形式进行读入页面
+    function readAsDataURL(size){
+        // 检查是否为图像类型
+        var simpleFile = document.getElementById("file").files[0];
+        if(!/image\/\w+/.test(simpleFile.type)) {
+            alert("请确保文件类型为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        // 将文件以Data URL形式进行读入页面
+        reader.readAsDataURL(simpleFile);
+        reader.onload = function(e){
+            // console.log(this.result);
+            // str_line = '<img src="'+this.result+' alt="" />';
+            // console.log(str_line)
+            // result.innerHTML = '<img src="'+this.result+" height='"+ size +"50%' width='"+ size+"%' alt="" />";
+            if (size == 100){
+
+            result.innerHTML = '<img src="'+this.result+'" alt="" />';
+            }else{
+
+            result.innerHTML = '<img src="'+this.result+'" alt="" height="' +size+ "%" + '" width="'+ size+ "%" + '"  />';
+            }
+           rep_str =  "<input type='text' name = 'size' value='" + size + "'id='size' /></br>";
+
+        //    var textnode=document.createTextNode(rep_str);
+            var img_size = document.getElementById("size");
+            img_size.innerHTML = rep_str
+            // img_size.replaceChild(textnode, img_size)
+           console.log(img_size)
+            // result.innerHTML = str_line;
+        }
+    }
+     
+    // 将文件以二进制形式读入页面
+    function readAsBinaryString(){
+        // 检查是否为图像类型
+        var simpleFile = document.getElementById("file").files[0];
+        if(!/image\/\w+/.test(simpleFile.type)) {
+            alert("请确保文件类型为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        // 将文件以二进制形式进行读入页面
+        reader.readAsBinaryString(simpleFile);
+        reader.onload = function(e){
+            // 在页面上显示二进制数据
+            result.innerHTML = this.result;
+        }
+    }
+    // 将文件以文本形式读入页面中
+    function readAsText(){
+        var simpleFile = document.getElementById("file").files[0];
+        var reader = new FileReader();
+        // 将文件以文本形式读入页面中
+        reader.readAsText(simpleFile);
+        reader.onload = function(e){
+            result.innerHTML = this.result;
+        }
+    }
+</script>
+
 </html>
