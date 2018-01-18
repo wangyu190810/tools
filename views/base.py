@@ -4,11 +4,13 @@ import json
 import os
 import logging
 import tornado.web
+import tornado
+
 import uuid
 from PIL import Image  
 
 from etc import config
-from lib.baiduOCRApi import parse_result, parse_result_table
+from lib.baiduOCRApi import parse_result, parse_result_table,parse_result_sync
 # serializer for JWT
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 # exceptions for JWT
@@ -33,7 +35,9 @@ class Upload(BaseHandler):
 
     def get(self):
         self.render("OCRupload.html")
-
+    
+    @tornado.web.asynchronous
+    @tornado.gen.coroutine
     def post(self):
         # 文件的暂存路径
         upload_path = config.upload_path
@@ -50,12 +54,15 @@ class Upload(BaseHandler):
             # 有些文件需要已二进制的形式存储，实际中可以更改
             with open(filepath, 'wb') as up:
                 up.write(meta['body'])
-            result = parse_result(upload_path, filename)
+            # result = parse_result(upload_path, filename)
 
             # result = parse_result_table(upload_path, filename)
             # self.write(result)
+            response = yield tornado.gen.Task(parse_result_sync, upload_path, filename)
+            self.render("OCRresponse.html",result=response)
+            # self.finish('hello')
 
-            return self.render("OCRresponse.html",result=result)
+
 
 class UploadImg(BaseHandler):
 
