@@ -56,6 +56,7 @@ def parse_result_sync(path, filename):
     data = "<li>"
     filePath = file_path( path ,filename)
     result = aipOcr.basicGeneral(get_file_content(filePath))
+    
     if  result.get("words_result_num",0) == 0:
         return u"无法识别"
     words_results = result['words_result']
@@ -72,3 +73,4 @@ def parse_result_table(path,filename):
     data = aipOcr.testurl(get_file_content(filePath))
     print(data)
     return data
+
