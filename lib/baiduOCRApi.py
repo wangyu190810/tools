@@ -39,7 +39,6 @@ def parse_result(path, filename):
     data = "<li>"
     filePath = file_path( path ,filename)
     result = aipOcr.basicGeneral(get_file_content(filePath))
-    print(result)
     if  result["words_result_num"] == 0:
         return u"无法识别"
     words_results = result['words_result']

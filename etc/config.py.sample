@@ -30,3 +30,6 @@ if system_os == "Windows":
 elif system_os == "Linux":
     os_env = "linux"
 
+
+class Config(object):
+    db = "postgresql+psycopg2://user:password@host:port/test"

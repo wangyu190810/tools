@@ -20,7 +20,17 @@ from itsdangerous import SignatureExpired, BadSignature, BadData
 logger = logging.getLogger(__name__)
 
 class BaseHandler(tornado.web.RequestHandler):
-    pass
+    
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*") # 这个地方可以写域名
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    
+    
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
 
 
 class MainHandler(tornado.web.RequestHandler):
