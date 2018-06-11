@@ -8,3 +8,4 @@ redis==2.10.5
 requests==2.18.4
 SQLAlchemy==1.0.14
 tornado==4.5.1
+baidu-aip==2.2.5.0
