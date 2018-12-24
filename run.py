@@ -7,6 +7,8 @@ import tornado.web
 
 from views.base import MainHandler,Upload,UploadImg
 from lib.LogUtil import addTimedRotatingFileHandler
+from views.spider import spider_handler
+
 from etc import config
 
 settings = dict(
@@ -16,12 +18,16 @@ settings = dict(
 
 
 def make_app():
-    return tornado.web.Application([
+    handlers = [
         (r"/", MainHandler),
         (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": config.static_path}),
         (r"/upload", Upload),
         (r"/upload_img",UploadImg),
-    ], **settings)
+    ]
+    handlers.extend(spider_handler)
+    
+    return tornado.web.Application(handlers, **settings)
+
 
 if __name__ == "__main__":
     # path = os.path.abspath(__file__)

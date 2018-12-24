@@ -4,11 +4,13 @@ import json
 import os
 import logging
 import tornado.web
+import tornado
+
 import uuid
 from PIL import Image  
 
 from etc import config
-from lib.baiduOCRApi import parse_result, parse_result_table
+from lib.baiduOCRApi import parse_result, parse_result_table,parse_result_sync
 # serializer for JWT
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 # exceptions for JWT
@@ -18,7 +20,17 @@ from itsdangerous import SignatureExpired, BadSignature, BadData
 logger = logging.getLogger(__name__)
 
 class BaseHandler(tornado.web.RequestHandler):
-    pass
+    
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*") # 这个地方可以写域名
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    
+    
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -33,7 +45,9 @@ class Upload(BaseHandler):
 
     def get(self):
         self.render("OCRupload.html")
-
+    
+    @tornado.web.asynchronous
+    @tornado.gen.coroutine
     def post(self):
         # 文件的暂存路径
         upload_path = config.upload_path
@@ -50,10 +64,14 @@ class Upload(BaseHandler):
             # 有些文件需要已二进制的形式存储，实际中可以更改
             with open(filepath, 'wb') as up:
                 up.write(meta['body'])
-            result = parse_result(upload_path, filename)
+            # result = parse_result(upload_path, filename)
 
             # result = parse_result_table(upload_path, filename)
-            self.write(result)
+            # self.write(result)
+            response = yield tornado.gen.Task(parse_result_sync, upload_path, filename)
+            self.render("OCRresponse.html",result=response)
+            # self.finish('hello')
+
 
 
 class UploadImg(BaseHandler):

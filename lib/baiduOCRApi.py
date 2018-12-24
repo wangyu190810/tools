@@ -1,4 +1,7 @@
 # -*- coding: UTF-8 -*-
+
+import tornado
+
 from lib.OCRApiExt import ExtAipOcr
 
 from etc.config import baidu_OCR, os_env
@@ -48,6 +51,17 @@ def parse_result(path, filename):
         data += "<li>"
     return data + "<li\>"
 
+@tornado.gen.coroutine
+def parse_result_sync(path, filename):
+    """解析返回结果"""
+    data = "<li>"
+    filePath = file_path( path ,filename)
+    result = aipOcr.basicGeneral(get_file_content(filePath))
+    
+    if  result.get("words_result_num",0) == 0:
+        return u"无法识别"
+    words_results = result['words_result']
+    for word_info in words_results:
 def parse_result_table(path,filename):
     """处理表格图片"""
     filePath = file_path( path ,filename)
