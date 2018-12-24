@@ -62,9 +62,16 @@ def parse_result_sync(path, filename):
         return u"无法识别"
     words_results = result['words_result']
     for word_info in words_results:
+        words = word_info['words']
+        data += words
+        data += "<li\>"
+        data += "<li>"
+    return data + "<li\>"
+
 def parse_result_table(path,filename):
     """处理表格图片"""
     filePath = file_path( path ,filename)
     data = aipOcr.testurl(get_file_content(filePath))
     print(data)
     return data
+
