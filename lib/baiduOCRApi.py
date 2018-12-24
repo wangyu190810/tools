@@ -3,6 +3,7 @@ from lib.OCRApiExt import ExtAipOcr
 
 from etc.config import baidu_OCR, os_env
 import json
+import logging
 
 
 
@@ -36,7 +37,7 @@ def parse_result(path, filename):
     data = "<li>"
     filePath = file_path( path ,filename)
     result = aipOcr.basicGeneral(get_file_content(filePath))
-    print(result)
+    logging.info(result)
     if  result["words_result_num"] == 0:
         return u"无法识别"
     words_results = result['words_result']

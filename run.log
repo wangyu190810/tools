@@ -1,0 +1,4 @@
+[2018-12-24 13:31:04,969][tid:14152][web.py:2063] INFO: 200 GET /upload (::1) 5.00ms
+[2018-12-24 13:31:16,499][tid:14152][web.py:2063] INFO: 200 POST /upload (::1) 4922.00ms
+[2018-12-24 13:32:17,049][tid:14152][autoreload.py:198] INFO: E:\opensource\tools\lib\baiduOCRApi.py modified; restarting server
+[2018-12-24 13:32:24,940][tid:4196][autoreload.py:198] INFO: E:\opensource\tools\lib\baiduOCRApi.py modified; restarting server

@@ -25,7 +25,7 @@ def make_app():
 
 if __name__ == "__main__":
     # path = os.path.abspath(__file__)
-    addTimedRotatingFileHandler(config.log_path+"/run.log")
+    addTimedRotatingFileHandler(config.log_path+"run.log",logLevel="INFO")
     app = make_app()
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
